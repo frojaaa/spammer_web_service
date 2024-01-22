@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "spammer-web-service"
+version = "0.1.0"
+description = ""
+authors = ["froja <sps4daniil@gmail.com>"]
+readme = "README.md"
+packages = [{include = "spammer_web_service"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.109.0"
+uvicorn = "^0.26.0"
+sqlalchemy = "^2.0.25"
+pydantic-settings = "^2.1.0"
+loguru = "^0.7.2"
+psycopg2 = "^2.9.9"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest-asyncio = "^0.23.3"
+pytest = "^7.4.4"
+async-asgi-testclient = "^1.4.11"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
