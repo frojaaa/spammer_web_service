@@ -21,5 +21,5 @@ class ProxyProtocol(StrEnum):
     socks5 = 'socks5'
 
 
-def common_parameters(limit: Annotated[int, Query(gt=0)] = 20, offset: Annotated[int, Query(ge=0)] = 0) -> CommonParams:
+def common_parameters(limit: Annotated[int, Query(gt=0)] = 100, offset: Annotated[int, Query(ge=0)] = 0) -> CommonParams:
     return CommonParams(limit=limit, offset=offset)

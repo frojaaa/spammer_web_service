@@ -3,7 +3,6 @@ name = "spammer-web-service"
 version = "0.1.0"
 description = ""
 authors = ["froja <sps4daniil@gmail.com>"]
-readme = "README.md"
 packages = [{include = "spammer_web_service"}]
 
 [tool.poetry.dependencies]
