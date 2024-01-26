@@ -6,7 +6,6 @@ from apps.accounts.schemas import Account
 
 
 class ProjectBase(BaseModel):
-    id: int
     name: str
     message: str
 
@@ -15,6 +14,7 @@ class ProjectBase(BaseModel):
 
 
 class Project(ProjectBase):
+    id: int
     accounts: list[Account] = []
     chats: list[Chat] = []
     subscriptions: list[Subscription] = []
