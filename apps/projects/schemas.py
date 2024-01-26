@@ -25,3 +25,7 @@ class Project(ProjectBase):
 
 class ProjectCreate(ProjectBase):
     pass
+
+
+class ProjectEdit(ProjectBase):
+    id: int

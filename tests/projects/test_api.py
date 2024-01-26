@@ -4,7 +4,7 @@ import pytest
 from async_asgi_testclient import TestClient
 from fastapi import status
 
-from apps.projects.schemas import ProjectCreate
+from apps.projects.schemas import ProjectCreate, ProjectEdit
 
 
 @pytest.mark.asyncio
@@ -21,7 +21,7 @@ async def test_read_project(client: TestClient):
 
 @pytest.mark.asyncio
 async def test_create_projects(client: TestClient):
-    project = ProjectCreate(id=12345678, name='test', message='test_message')
+    project = ProjectCreate(name='test', message='test_message')
     response = await client.post("/projects/create", json=[project.model_dump()])
     assert response.status_code == status.HTTP_201_CREATED and len(response.json()) > 0
     response = await client.get(f"/projects/{project.id}")
@@ -34,7 +34,7 @@ async def test_create_projects(client: TestClient):
 
 @pytest.mark.asyncio
 async def test_edit_project(client: TestClient):
-    project = ProjectCreate(id=0, name='string', message=f'test_message @ {datetime.now().isoformat()}')
+    project = ProjectEdit(id=0, name='string', message=f'test_message @ {datetime.now().isoformat()}')
     response = await client.put(f"/projects/{project.id}", json=project.model_dump())
     assert response.status_code == status.HTTP_201_CREATED
     assert response.json()['message'] == project.message

@@ -2,7 +2,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
 from .models import Project
-from .schemas import ProjectCreate
+from .schemas import ProjectCreate, ProjectEdit
 
 
 class ProjectsService:
@@ -25,7 +25,7 @@ class ProjectsService:
         self._db.query(Project).filter(Project.id == id_).delete()
         self._db.commit()
 
-    def edit_project(self, project: ProjectCreate) -> Project | None:
+    def edit_project(self, project: ProjectEdit) -> Project | None:
         proj = self._db.get(Project, (project.id,))
         if proj:
             proj.message = project.message
