@@ -14,7 +14,7 @@ async def test_get_subscriptions(client: TestClient):
 
 @pytest.mark.asyncio
 async def test_create_subscriptions(client: TestClient):
-    subscription = SubscriptionCreate(chat_id='test', account_id=0)
+    subscription = SubscriptionCreate(chat_id='test', project_id=0)
     response = await client.post("/subscriptions/create", json=[subscription.model_dump()])
     assert response.status_code == status.HTTP_201_CREATED and len(response.json()) > 0
     response = await client.get('/subscriptions')

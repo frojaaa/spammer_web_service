@@ -11,7 +11,7 @@ class SubscriptionsService(metaclass=Singleton):
         self._db = db
 
     def get_subscription(self, subscription: SubscriptionBase) -> Subscription | None:
-        return self._db.get(Subscription, (subscription.chat_id, subscription.account_id))
+        return self._db.get(Subscription, (subscription.chat_id, subscription.project_id))
 
     def get_subscriptions(self, limit: int, offset: int) -> list[Subscription]:
         return self._db.query(Subscription).offset(offset).limit(limit).all()

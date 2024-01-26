@@ -9,4 +9,4 @@ class Chat(Base):
     __tablename__ = 'chats'
 
     id: Mapped[str] = mapped_column(primary_key=True)
-    account_id: Mapped[int] = mapped_column(ForeignKey('accounts.id', ondelete='CASCADE'), primary_key=True)
+    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id', ondelete='CASCADE'), primary_key=True)

@@ -24,12 +24,3 @@ class AccountsService:
     def delete_account(self, id_: int) -> None:
         self._db.query(Account).filter(Account.id == id_).delete()
         self._db.commit()
-
-    def edit_account(self, account: AccountCreate) -> Account | None:
-        acc = self._db.get(Account, (account.id,))
-        if acc:
-            acc.message = account.message
-            self._db.add(acc)
-            self._db.commit()
-            self._db.refresh(acc)
-            return acc

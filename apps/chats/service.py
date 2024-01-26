@@ -12,7 +12,7 @@ class ChatsService(metaclass=Singleton):
         self._db = db
 
     def get_chat(self, chat: ChatBase) -> Chat | None:
-        return self._db.get(Chat, (chat.id, chat.account_id))
+        return self._db.get(Chat, (chat.id, chat.project_id))
 
     def get_chats(self, limit: int, offset: int) -> list[Chat]:
         return self._db.query(Chat).offset(offset).limit(limit).all()

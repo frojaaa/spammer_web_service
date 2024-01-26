@@ -1,9 +1,6 @@
-from datetime import datetime
-
 import pytest
 from async_asgi_testclient import TestClient
 from fastapi import status
-from loguru import logger
 
 from apps.accounts.schemas import AccountCreate
 
@@ -22,7 +19,7 @@ async def test_read_account(client: TestClient):
 
 @pytest.mark.asyncio
 async def test_create_accounts(client: TestClient):
-    account = AccountCreate(id=12345678, api_hash='test', name='test', message='test_message')
+    account = AccountCreate(id=12345678, api_hash='test', name='test', project_id=0)
     response = await client.post("/accounts/create", json=[account.model_dump()])
     assert response.status_code == status.HTTP_201_CREATED and len(response.json()) > 0
     response = await client.get(f"/accounts/{account.id}")
@@ -31,12 +28,3 @@ async def test_create_accounts(client: TestClient):
     assert response.status_code == status.HTTP_204_NO_CONTENT
     response = await client.get(f"/accounts/{account.id}")
     assert response.status_code == status.HTTP_404_NOT_FOUND
-
-
-@pytest.mark.asyncio
-async def test_edit_account(client: TestClient):
-    account = AccountCreate(id=0, api_hash='string', name='string',
-                            message=f'test_message @ {datetime.now().isoformat()}')
-    response = await client.put(f"/accounts/{account.id}", json=account.model_dump())
-    assert response.status_code == status.HTTP_201_CREATED
-    assert response.json()['message'] == account.message

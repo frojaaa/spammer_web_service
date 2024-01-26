@@ -43,15 +43,6 @@ def delete_account(account_id: int, service: AccountsService = Depends(get_accou
     service.delete_account(account_id)
 
 
-@router.put('/{account_id}', response_model=Account, status_code=status.HTTP_201_CREATED)
-def update_account(account_id: int, account: AccountCreate, service: AccountsService = Depends(get_accounts_service)):
-    acc = service.get_account(account_id)
-    if not acc:
-        raise HTTPException(status_code=404, detail="Account not found")
-    acc = service.edit_account(account)
-    return acc
-
-
 @router.post('/create', response_model=list[Account], status_code=status.HTTP_201_CREATED)
 def create_accounts(accounts: set[AccountCreate], service: AccountsService = Depends(get_accounts_service)):
     return service.create_accounts(accounts)
