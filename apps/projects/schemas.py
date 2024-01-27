@@ -10,7 +10,7 @@ class ProjectBase(BaseModel):
     message: str
 
     def __hash__(self):
-        return hash(f"{self.id}_{self.name}")
+        return hash(f"{self.name}_{self.message}")
 
 
 class Project(ProjectBase):

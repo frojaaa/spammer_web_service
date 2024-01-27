@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Annotated
 
 from .service import ProjectsService
-from .schemas import Project, ProjectCreate
+from .schemas import Project, ProjectCreate, ProjectEdit
 from db import SessionLocal
 from ..dependencies import common_parameters
 from ..schemas import CommonParams
@@ -44,7 +44,7 @@ def delete_project(project_id: int, service: ProjectsService = Depends(get_proje
 
 
 @router.put('/{project_id}', response_model=Project, status_code=status.HTTP_201_CREATED)
-def update_project(project_id: int, project: ProjectCreate, service: ProjectsService = Depends(get_projects_service)):
+def update_project(project_id: int, project: ProjectEdit, service: ProjectsService = Depends(get_projects_service)):
     acc = service.get_project(project_id)
     if not acc:
         raise HTTPException(status_code=404, detail="Project not found")

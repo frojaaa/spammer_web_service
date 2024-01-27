@@ -1,3 +1,4 @@
+from loguru import logger
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
