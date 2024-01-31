@@ -16,6 +16,8 @@ class ProxyBase(BaseModel):
 
 
 class Proxy(ProxyBase):
+    id: int
+
     class Config:
         orm_mode = True
 

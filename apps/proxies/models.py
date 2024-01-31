@@ -8,9 +8,10 @@ from db import Base
 class Proxy(Base):
     __tablename__ = 'proxies'
 
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     protocol: Mapped[ProxyProtocol] = mapped_column(
-        Enum("http", "socks4", "socks5", name="proxy_protocol"), primary_key=True,
+        Enum("http", "socks4", "socks5", name="proxy_protocol"),
     )
-    host: Mapped[str] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(primary_key=True)
-    password: Mapped[str] = mapped_column(primary_key=True)
+    host: Mapped[str]
+    username: Mapped[str]
+    password: Mapped[str]

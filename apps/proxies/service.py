@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
 from .models import Proxy
-from .schemas import ProxyCreate, ProxyBase
+from .schemas import ProxyCreate
 from ..dependencies import Singleton
 
 
@@ -14,8 +14,8 @@ class ProxiesService(metaclass=Singleton):
     def get_proxies(self, limit: int, offset: int) -> list[Proxy]:
         return self._db.query(Proxy).offset(offset).limit(limit).all()
 
-    def get_proxy(self, proxy: ProxyBase) -> Proxy | None:
-        return self._db.get(Proxy, (proxy.protocol, proxy.host, proxy.username, proxy.password))
+    def get_proxy(self, proxy_id: int) -> Proxy | None:
+        return self._db.get(Proxy, (proxy_id,))
 
     @logger.catch(BaseException)
     def create_proxies(self, proxies: set[ProxyCreate]) -> list[Proxy]:
@@ -24,8 +24,8 @@ class ProxiesService(metaclass=Singleton):
         self._db.commit()
         return instances
 
-    def delete_proxy(self, proxy: ProxyCreate) -> None:
-        proxy_instance = self.get_proxy(proxy)
+    def delete_proxy(self, proxy_id: int) -> None:
+        proxy_instance = self.get_proxy(proxy_id)
         if proxy_instance:
             self._db.delete(proxy_instance)
             self._db.commit()

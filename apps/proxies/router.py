@@ -32,9 +32,9 @@ def read_proxies(
     return proxies
 
 
-@router.delete('/delete', status_code=status.HTTP_204_NO_CONTENT)
-def delete_proxy(proxy: ProxyCreate, service: ProxiesService = Depends(get_proxies_service)):
-    service.delete_proxy(proxy)
+@router.delete('/delete/{proxy_id}', status_code=status.HTTP_204_NO_CONTENT)
+def delete_proxy(proxy_id: int, service: ProxiesService = Depends(get_proxies_service)):
+    service.delete_proxy(proxy_id)
 
 
 @logger.catch(BaseException)

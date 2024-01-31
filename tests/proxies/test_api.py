@@ -17,9 +17,10 @@ async def test_create_proxies(client: TestClient):
     proxy = ProxyCreate(protocol=ProxyProtocol.http, host='localhost', username='test', password='test')
     response = await client.post("/proxies/create", json=[proxy.model_dump()])
     assert response.status_code == status.HTTP_201_CREATED and len(response.json()) > 0
+    proxy_id = response.json()[0]['id']
     response = await client.get('/proxies')
-    assert response.status_code == status.HTTP_200_OK and proxy.model_dump() in response.json()
-    response = await client.delete(f"/proxies/delete", json=proxy.model_dump())
+    assert response.status_code == status.HTTP_200_OK and proxy_id in [p.get('id', None) for p in response.json()]
+    response = await client.delete(f"/proxies/delete/{proxy_id}", json=proxy.model_dump())
     assert response.status_code == status.HTTP_204_NO_CONTENT
     response = await client.get('/proxies')
     assert response.status_code == status.HTTP_200_OK and proxy.model_dump() not in response.json()
