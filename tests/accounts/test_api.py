@@ -19,12 +19,13 @@ async def test_read_account(client: TestClient):
 
 @pytest.mark.asyncio
 async def test_create_accounts(client: TestClient):
-    account = AccountCreate(id=12345678, api_hash='test', name='test', project_id=0)
+    account = AccountCreate(name='test', project_id=0)
     response = await client.post("/accounts/create", json=[account.model_dump()])
     assert response.status_code == status.HTTP_201_CREATED and len(response.json()) > 0
-    response = await client.get(f"/accounts/{account.id}")
+    account_id = response.json()[0]['id']
+    response = await client.get(f"/accounts/{account_id}")
     assert response.status_code == status.HTTP_200_OK
-    response = await client.delete(f"/accounts/{account.id}")
+    response = await client.delete(f"/accounts/{account_id}")
     assert response.status_code == status.HTTP_204_NO_CONTENT
-    response = await client.get(f"/accounts/{account.id}")
+    response = await client.get(f"/accounts/{account_id}")
     assert response.status_code == status.HTTP_404_NOT_FOUND

@@ -17,9 +17,9 @@ class AccountsService:
 
     def create_accounts(self, accounts: set[AccountCreate]) -> list[Account]:
         instances = [account.model_dump() for account in accounts]
-        instances = self._db.scalars(insert(Account).on_conflict_do_nothing().returning(Account), instances)
+        db_instances = self._db.scalars(insert(Account).on_conflict_do_nothing().returning(Account), instances)
         self._db.commit()
-        return instances
+        return db_instances
 
     def delete_account(self, id_: int) -> None:
         self._db.query(Account).filter(Account.id == id_).delete()
