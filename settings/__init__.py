@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -11,3 +13,6 @@ class Settings(BaseSettings):
 
 
 settings = Settings(_env_file='.env', _env_file_encoding='utf-8')
+
+
+BASE_DIR = Path(__file__).parent.parent.resolve()

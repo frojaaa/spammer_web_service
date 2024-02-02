@@ -1,8 +1,10 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 from db import engine, Base
 from apps.pagination import router
+from settings import BASE_DIR
 
 Base.metadata.create_all(bind=engine, checkfirst=True)
 
@@ -21,3 +23,4 @@ app.add_middleware(
 )
 
 app.include_router(router)
+app.mount("/static", StaticFiles(directory=BASE_DIR / 'sessions'), name='static')

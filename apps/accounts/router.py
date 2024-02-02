@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile
 
 from typing import Annotated
 
+from settings import BASE_DIR
 from .service import AccountsService
 from .schemas import Account, AccountCreate
 from db import SessionLocal
@@ -46,3 +47,26 @@ def delete_account(account_id: int, service: AccountsService = Depends(get_accou
 @router.post('/create', response_model=list[Account], status_code=status.HTTP_201_CREATED)
 def create_accounts(accounts: set[AccountCreate], service: AccountsService = Depends(get_accounts_service)):
     return service.create_accounts(accounts)
+
+
+@router.post("/sessions/{project_id}", status_code=status.HTTP_201_CREATED)
+async def upload_file(project_id: int, files: list[UploadFile]):
+    if not files:
+        raise HTTPException(status_code=400, detail="No files were sent")
+    SESSIONS_DIR = BASE_DIR / 'sessions' / str(project_id)
+    SESSIONS_DIR.mkdir(exist_ok=True)
+    for file in files:
+        file_path = SESSIONS_DIR / file.filename
+        with open(file_path, 'wb') as f:
+            f.write(await file.read())
+
+
+@router.delete("/sessions/{project_id}/{account_name}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_file(project_id: int, account_name: str):
+    SESSIONS_DIR = BASE_DIR / 'sessions' / str(project_id)
+    if not SESSIONS_DIR.exists():
+        raise HTTPException(status_code=404, detail=f"There are no files associated with {project_id} accounts")
+    session_file = SESSIONS_DIR / f"{account_name}.session"
+    if not session_file.exists():
+        raise HTTPException(status_code=404, detail=f"There are no files associated with {account_name} account")
+    session_file.unlink()
