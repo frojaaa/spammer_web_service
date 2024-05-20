@@ -29,4 +29,4 @@ class ChatsService(metaclass=Singleton):
             self._db.delete(chat_instance)
             self._db.commit()
         else:
-            raise Exception('nihuya net takogo chata')
+            raise Exception('chat does not exist')
